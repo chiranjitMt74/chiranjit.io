@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Nature Wings</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <style>
+        .chatbox_content {
+            width: 50%;
+            min-height: 600px;
+            border: 1px solid #ccc;
+            background: linear-gradient(#729f3b, #f4f7f9);
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: auto;
+            padding: 0px;
+			border-radius: 10px;
+			max-height: 600px; /* Set the desired max height for the chat box */
+			overflow-y: auto;
+        }
+		
+        .meg_content{
+			height: 500px;
+			overflow-y: scroll;
+		}
+		 .user-message {
+            text-align: left;
+            color: #fff;
+            background-color: #1a33b9;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 15px 15px 0 15px;
+            display: inline-block;
+            clear: both;
+            overflow: hidden;
+            position: relative;
+			margin-left:50%;
+        }
+		.user-message-align{
+			text-align: right;
+			margin-right:10px;
+			margin-top: 10px;
+		}
+		
+        .bot-message {
+            text-align: left;
+            color: #000;
+            background-color: #a4d2ff;
+            padding: 10px;
+            border-radius: 5px;
+			border-radius: 15px 15px 0 15px;
+            display: inline-block;
+            clear: both;
+            overflow: hidden;
+            position: relative;
+			margin-left:10px;
+			margin-right:35%
+        }
+
+        .input_box {
+            width: 98%;
+			position: relative;
+			border-radius: 10px;
+			padding: 8px 8px;
+			border: 0.1rem solid #ddd;
+			margin: 6px 0px 0px 0px;
+        }
+
+		.Chatbot_root_div{
+
+			display: grid;
+			place-items: center;
+		}
+		.header {
+		  background-color: #f2f2f2;
+		  padding: 10px;
+		  text-align: center;
+		  font-family: Merriweather,serif;
+		}
+
+		.header h1 {
+		  margin: 0;
+		  color: #a6ce39;;
+		}
+		.input_inner_box{
+			width: 50%;
+			padding: 0;
+			position: relative;
+		}
+		.input_inner_box .material-symbols-outlined{
+				position: absolute;
+				right: 0;
+				top: 11px;
+				color: #a6ce39;
+				opacity:0.4;
+		}
+		.loader{
+			display: flex;
+			text-align: left;
+			color: #000;
+			background-color: #a4d2ff;
+			padding: 10px;
+			border-radius: 5px;
+			border-radius: 15px 15px 0 15px;
+			clear: both;
+			overflow: hidden;
+			position: relative;
+			margin-left:10px;
+			max-width:15%;
+		}
+		.disabled_button{
+			position: absolute;
+			right: 0;
+			top: 11px;
+			color: gray;
+		}
+	
+    </style>
+	<style>
+		.material-symbols-outlined {
+		  font-variation-settings:
+		  'FILL' 0,
+		  'wght' 400,
+		  'GRAD' 0,
+		  'opsz' 48;
+		  border: none;
+		  background-color: transparent;
+		}
+</style>
+<style>
+	.typing-loader{
+		margin-top: 10px;
+		margin-left:10px;
+		width: 5px;
+		height: 5px;
+		-webkit-animation: line 1s linear infinite alternate;
+	   -moz-animation: line 1s linear infinite alternate;
+	   animation: line 1s linear infinite alternate;
+	}
+	@-webkit-keyframes line{
+		0%{
+		   
+			background-color: rgba(0,0,0, 1);
+			box-shadow: 12px 0px 0px 0px rgba(0,0,0,0.2), 
+						24px 0px 0px 0px rgba(0,0,0,0.2);
+						
+		  }
+		25%{ 
+				background-color: rgba(0,0,0, 0.4);
+				box-shadow: 12px 0px 0px 0px rgba(0,0,0,2), 
+						24px 0px 0px 0px rgba(0,0,0,0.2);
+						
+		}
+		75%{ background-color: rgba(0,0,0, 0.4);
+			box-shadow: 12px 0px 0px 0px rgba(0,0,0,0.2), 
+						24px 0px 0px 0px rgba(0,0,0,2);
+					   
+		  }
+	}
+
+	@-moz-keyframes line{
+		0%{
+		   
+			background-color: rgba(0,0,0, 1);
+			box-shadow: 12px 0px 0px 0px rgba(0,0,0,0.2), 
+						24px 0px 0px 0px rgba(0,0,0,0.2);
+						
+		  }
+		25%{ 
+				background-color: rgba(0,0,0, 0.4);
+				box-shadow: 12px 0px 0px 0px rgba(0,0,0,2), 
+						24px 0px 0px 0px rgba(0,0,0,0.2);
+						
+		}
+		75%{ background-color: rgba(0,0,0, 0.4);
+			box-shadow: 12px 0px 0px 0px rgba(0,0,0,0.2), 
+						24px 0px 0px 0px rgba(0,0,0,2);
+					   
+		  }
+	}
+
+	@keyframes line{
+		0%{
+		   
+			background-color: rgba(0,0,0, 1);
+			box-shadow: 12px 0px 0px 0px rgba(0,0,0,0.2), 
+						24px 0px 0px 0px rgba(0,0,0,0.2);
+						
+		  }
+		25%{ 
+				background-color: rgba(0,0,0, 0.4);
+				box-shadow: 12px 0px 0px 0px rgba(0,0,0,2), 
+						24px 0px 0px 0px rgba(0,0,0,0.2);
+						
+		}
+		75%{ background-color: rgba(0,0,0, 0.4);
+			box-shadow: 12px 0px 0px 0px rgba(0,0,0,0.2), 
+						24px 0px 0px 0px rgba(0,0,0,2);
+					   
+		  }
+	}	
+</style>
+</head>
+<body>
+	<div>
+		<div class="Chatbot_root_div">
+		
+			
+			<div class="chatbox_content">
+				<div class="header">
+				  <h1>Nature Wings</h1>
+				</div>
+				<div id="chatbox" class="meg_content"></div>
+			</div>
+			<div class="input_inner_box">
+				<input class="input_box" type="text" id="input" placeholder="Send a message..." oninput="text_box_element()"/>
+				<button class="material-symbols-outlined" type="submit" disabled id="send_button"  onclick="sendMessage()"  >Send</button>
+			</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+
+<script>
+	var get_response_result=false;
+	
+	$(document).ready(function() {
+		document.getElementById("input").focus();
+		 
+	});
+	function scrollToBottom() {
+      var chatBox = document.getElementById("chatbox");
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+	
+	function text_box_element(){
+		//console.log(get_response_result);
+		scrollToBottom();
+		//var input = document.getElementById("input");
+		var message = $('.input_box').val();
+		console.log("message",message)
+		if (message.trim() != '' && !get_response_result ){
+			$(':input[type="submit"]').prop('disabled', false).css('opacity',1);
+		}
+		else{
+			$(':input[type="submit"]').prop('disabled', true).css('opacity',0.4);
+		}
+		//console.log(typeof(msg))
+		//if ()
+		
+		 
+	}
+	$('#input').keypress(function(event) {
+		if (event.keyCode === 13 && $('.input_box').val() != '' && !get_response_result) {
+		console.log("in the key press")
+		console.log($('.input_box').val());
+		  event.preventDefault(); 
+		  sendMessage();
+		  
+		}
+	});
+
+	function sendMessage() {
+		$(':input[type="submit"]').prop('disabled', true).css('opacity',0.4);
+		var input = document.getElementById("input");
+		var message = $('.input_box').val();
+		$('.input_box').val('');
+		//if(message)
+
+		var chatbox = document.getElementById("chatbox");
+		var divElement = document.createElement("div");
+		divElement.className = "user-message-align";
+		var userMessage = document.createElement("p");
+		userMessage.className = "user-message";
+		userMessage.innerHTML =  message;
+		divElement.appendChild(userMessage);
+		chatbox.appendChild(divElement);
+		scrollToBottom();
+		getResponse(message)
+	}
+
+	function getResponse(message) {
+		//console.log(message);
+		
+		$.ajax({
+			url: 'http://bc95-35-223-60-182.ngrok-free.app/api/chatreply',
+			type: 'POST',
+			data: { question: message },
+			beforeSend: function() {
+				get_response_result = true;
+				scrollToBottom();
+				var chatbox = document.getElementById("chatbox");
+				var loader = document.createElement("p");
+				loader.className = "loader";
+				loader.innerHTML = "Loading"+" " ;
+				var loader_dot = document.createElement("div");
+				loader_dot.className = "typing-loader";
+				loader.appendChild(loader_dot)
+				
+				chatbox.appendChild(loader);
+				scrollToBottom();
+				$(':input[type="submit"]').prop('disabled', true).css('opacity',0.4);
+				//$('.input_box').attr('disabled','disabled')
+				$('.input_box').focus()
+			},
+			success: function(response) {
+				var chatbox = document.getElementById("chatbox");
+				var loader = chatbox.querySelector(".loader");
+				console.log(loader,"loader");
+				if (loader) {
+				  chatbox.removeChild(loader);
+				}
+				var botMessage = document.createElement("p");
+				botMessage.className = "bot-message";
+				botMessage.innerHTML = response ;
+				chatbox.appendChild(botMessage);
+				document.getElementById("input").focus();
+				
+				$(':input[type="submit"]').prop('disabled', true).css('opacity',0.4);
+				//$('.input_box').removeAttr('disabled')
+				$('.input_box').focus()
+				get_response_result = false;
+				//chatbox.removeChild(botMessage);
+			},
+			error: function() {
+				
+				console.log("error");
+				$(':input[type="submit"]').prop('disabled', true).css('opacity',0.4);
+				$('.input_box').removeAttr('disabled')
+				scrollToBottom();
+				get_response_result = true;
+				// var chatbox = document.getElementById("chatbox");
+				// var loader = chatbox.querySelector("Typing......");
+				// if (loader) {
+				  // chatbox.removeChild(loader);
+				// }
+				// var botMessage = document.createElement("p");
+				// botMessage.className = "bot-message";
+				// botMessage.innerHTML = "Oops! Something went wrong. Please try again." ;
+				// chatbox.appendChild(botMessage);
+			}
+		  })
+	}
+	
+	
+
+</script>
+
